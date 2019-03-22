@@ -1,19 +1,110 @@
-import 'package:deliverit/screens/login_screen.dart';
+import 'package:bloc/bloc.dart';
+import 'package:deliverit/respositories/user_repository.dart';
+import 'package:deliverit/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(DeliverIt());
+import 'package:deliverit/screens/login_screen.dart';
+import 'package:deliverit/screens/signup_screen.dart';
 
-class DeliverIt extends StatelessWidget {
+import 'package:deliverit/blocs/authentication/authentication.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+/// Monitor all Transitions
+class SimpleBlocDelegate extends BlocDelegate {
+  @override
+  void onTransition(Transition transition) {
+    print(transition);
+  }
+}
+
+void main() async {
+  BlocSupervisor().delegate = SimpleBlocDelegate();
+  runApp(DeliverIt(
+      userRepository: UserRepository(
+          sharedPreferences: await SharedPreferences.getInstance())));
+}
+
+class DeliverIt extends StatefulWidget {
+  final UserRepository userRepository;
+
+  DeliverIt({Key key, @required this.userRepository}) : super(key: key);
+
+  @override
+  State<DeliverIt> createState() => _DeliverItState();
+}
+
+class _DeliverItState extends State<DeliverIt> {
+  UserRepository userRepository;
+  AuthenticationBloc authenticationBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    authenticationBloc =
+        AuthenticationBloc(userRepository: widget.userRepository);
+    authenticationBloc.dispatch(AppStarted());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    authenticationBloc.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'DeliverIt',
-      theme: _buildTheme(),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => LoginScreen(),
-      },
+    // return MaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   title: 'DeliverIt',
+    //   theme: _buildTheme(),
+    //   home: LoginScreen(),
+    //   routes: {
+    //     '/login': (context) => LoginScreen(),
+    //     '/signup': (context) => SignUpScreen(),
+    //   },
+    // );
+
+    return BlocProvider<AuthenticationBloc>(
+      bloc: authenticationBloc,
+      child: MaterialApp(
+        color: Colors.white,
+        debugShowCheckedModeBanner: false,
+        title: 'DeliverIt',
+        theme: _buildTheme(),
+        routes: {
+          '/login': (context) => LoginScreen(),
+          '/signup': (context) => SignUpScreen(),
+          '/home': (context) => HomeScreen(),
+        },
+        home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
+          bloc: authenticationBloc,
+          builder: (BuildContext context, AuthenticationState state) {
+            if (state is AuthenticationUninitialized) {
+              return Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+            if (state is AuthenticationAuthenticated) {
+              return HomeScreen();
+            }
+            if (state is AuthenticationUnauthenticated) {
+              return LoginScreen();
+            }
+            if (state is AuthenticationLoading) {
+              return Container(
+                // color: Colors.blue,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+              ;
+            }
+          },
+        ),
+      ),
     );
   }
 
