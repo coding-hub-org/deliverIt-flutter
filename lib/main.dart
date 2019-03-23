@@ -95,12 +95,11 @@ class _DeliverItState extends State<DeliverIt> {
             }
             if (state is AuthenticationLoading) {
               return Container(
-                // color: Colors.blue,
+                color: Colors.white,
                 child: Center(
                   child: CircularProgressIndicator(),
                 ),
               );
-              ;
             }
           },
         ),

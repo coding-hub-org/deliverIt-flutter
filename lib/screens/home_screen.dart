@@ -10,7 +10,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double statusBarHeight = MediaQuery.of(context).padding.top;
     double usingHeight = MediaQuery.of(context).size.height - statusBarHeight;
-    print(usingHeight);
 
     double margin = 20;
 
