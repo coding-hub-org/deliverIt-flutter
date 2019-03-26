@@ -161,12 +161,8 @@ class _LoginScreenState extends State<LoginScreen> {
         if (state is LoginInitial) {
           return Scaffold(
             body: SafeArea(
-              child: Stack(
-                children: <Widget>[
-                  _buildLoginForm(context, margin, usernameController,
-                      passwordController, questionStyle),
-                ],
-              ),
+              child: _buildLoginForm(context, margin, usernameController,
+                  passwordController, questionStyle),
             ),
           );
         }
