@@ -1,21 +1,20 @@
 import 'package:bloc/bloc.dart';
+import 'package:deliverit/blocs/authentication/authentication_bloc.dart';
 import 'package:deliverit/blocs/phone_verify/phone_verify_state.dart';
 import 'package:deliverit/blocs/phone_verify/phone_verify_event.dart';
-import 'package:deliverit/respositories/user_repository.dart';
 import 'package:meta/meta.dart';
 
 class PhoneVerifyBloc extends Bloc<PhoneVerifyEvent, PhoneVerifyState> {
-  final UserRepository userRepository;
+  final AuthenticationBloc authenticationBloc;
 
-  PhoneVerifyBloc({@required this.userRepository})
-      : assert(userRepository != null);
+  PhoneVerifyBloc({@required this.authenticationBloc})
+      : assert(authenticationBloc != null);
 
   @override
   PhoneVerifyState get initialState => PhoneVerifyInitial();
 
   @override
   Stream<PhoneVerifyState> mapEventToState(
-    PhoneVerifyState currentState,
     PhoneVerifyEvent event,
   ) async* {
     if (event is SendCodePressed) {
@@ -28,8 +27,8 @@ class PhoneVerifyBloc extends Bloc<PhoneVerifyEvent, PhoneVerifyState> {
       yield PhoneVerifyInitial();
     }
 
-    if (event is CodeTimeout) {
-      yield PhoneVerifyTimeout();
+    if (event is SMSTimeout) {
+      yield SMSVerifyTimeout();
     }
   }
 }

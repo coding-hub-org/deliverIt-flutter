@@ -12,11 +12,6 @@ class PhoneVerifyLoading extends PhoneVerifyState {
   String toString() => 'PhoneLoading';
 }
 
-class PhoneVerifyTimeout extends PhoneVerifyState {
-  @override
-  String toString() => 'PhoneVerifyTimeout';
-}
-
 class PhoneVerifyFailure extends PhoneVerifyState {
   final String error;
 
@@ -26,7 +21,26 @@ class PhoneVerifyFailure extends PhoneVerifyState {
   String toString() => 'PhoneVerifyFailure { error: $error }';
 }
 
-class PhoneVerifySuccess extends PhoneVerifyState {
+class SMSVerify extends PhoneVerifyState {
   @override
-  String toString() => 'PhoneLoading';
+  String toString() => 'SMSVerify';
+}
+
+class SMSVerifyTimeout extends PhoneVerifyState {
+  @override
+  String toString() => 'SMSVerifyTimeout';
+}
+
+class SMSVerifyFailure extends PhoneVerifyState {
+  final String error;
+
+  SMSVerifyFailure({@required this.error});
+
+  @override
+  String toString() => 'SMSVerifyFailure { error: $error }';
+}
+
+class SMSVerifySuccess extends PhoneVerifyState {
+  @override
+  String toString() => 'PhoneVerifySuccess';
 }

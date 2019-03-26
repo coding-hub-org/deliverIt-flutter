@@ -10,7 +10,7 @@ class ResendCodePressed extends PhoneVerifyEvent {
   String toString() => 'ResendCodePressed';
 }
 
-class CodeTimeout extends PhoneVerifyEvent {
+class SMSTimeout extends PhoneVerifyEvent {
   @override
-  String toString() => 'CodeTimeoutPressed';
+  String toString() => 'SMSTimeout';
 }
