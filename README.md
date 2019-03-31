@@ -45,7 +45,7 @@ keytool -exportcert -list -v \
 * [Flutter](https://flutter.io/)
 * [Firebase Auth](https://github.com/flutter/plugins/tree/master/packages/firebase_auth)
 * [Firebase Database](https://github.com/flutter/plugins/tree/master/packages/firebase_database)
-* [Firebase Messaging](https://github.com/flutter/plugins/tree/master/packages/firebase_messaging)
+- [Firebase_Firestore](https://github.com/flutter/plugins/tree/master/packages/cloud_firestore)
 * [Google_Maps_Flutter](https://github.com/flutter/plugins/tree/master/packages/google_maps_flutter)
 * [Location](https://github.com/Lyokone/flutterlocation)
 * [Permission_Handler](https://pub.dartlang.org/packages/permission_handler)
