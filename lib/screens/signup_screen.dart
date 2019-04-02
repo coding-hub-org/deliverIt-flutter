@@ -1,3 +1,4 @@
+import 'package:deliverit/widgets/raised_button_di.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -80,18 +81,9 @@ class SignUpScreen extends StatelessWidget {
                     Container(
                       width: MediaQuery.of(context).size.width * 0.9,
                       margin: EdgeInsets.only(top: margin),
-                      child: RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                        elevation: 1,
-                        highlightElevation: 1,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        onPressed: () {},
-                        child: Text(
-                          "REGISTER",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
+                      child: RaisedButtonDI(
+                        text: "REGISTER",
+                        onClick: () {},
                       ),
                     ),
                   ],
