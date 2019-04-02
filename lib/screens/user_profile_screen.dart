@@ -163,7 +163,7 @@ class StyledText1 extends StatelessWidget {
 
 class StyledText2 extends StatelessWidget {
   final String name;
-  StyledSubtitle({String name}) : this.name = name;
+  StyledText2({String name}) : this.name = name;
   @override
   Widget build(BuildContext context) {
     return Padding(
