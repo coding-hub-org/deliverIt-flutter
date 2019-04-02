@@ -56,7 +56,10 @@ class LoginForm extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(top: margin),
                   child: RaisedButtonDI(
-                    loginBloc: loginBloc,
+                    onClick: () {
+                      loginBloc.dispatch(LoginButtonPressed(
+                          username: "dsadas", password: "dasdasd"));
+                    },
                     text: "LOGIN",
                     width: MediaQuery.of(context).size.width * 0.9,
                   ),
