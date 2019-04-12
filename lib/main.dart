@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:deliverit/screens/login_screen.dart';
 import 'package:deliverit/screens/signup_screen.dart';
 import 'package:deliverit/screens/user_profile_screen.dart';
+import 'package:deliverit/screens/checkout_screen.dart';
 
 import 'package:deliverit/blocs/authentication/authentication.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,6 +80,7 @@ class _DeliverItState extends State<DeliverIt> {
           '/signup': (context) => SignUpScreen(),
           '/home': (context) => HomeScreen(),
           '/cart': (context) => CartScreen(),
+          '/checkout': (context) => CheckoutScreen(),
           '/userProfile': (context) => UserProfileScreen()
         },
         home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
@@ -95,7 +97,7 @@ class _DeliverItState extends State<DeliverIt> {
               return HomeScreen();
             }
             if (state is AuthenticationUnauthenticated) {
-              return CartScreen();
+              return CheckoutScreen();
             }
             if (state is AuthenticationLoading) {
               return Container(

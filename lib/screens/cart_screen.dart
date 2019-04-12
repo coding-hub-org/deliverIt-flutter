@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:money/money.dart';
 
 class CartScreen extends StatelessWidget {
   CartScreen({Key key}) : super(key: key);
