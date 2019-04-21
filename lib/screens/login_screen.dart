@@ -45,6 +45,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  void onLoginTapped({String username, String password}) {
+    loginBloc
+        .dispatch(LoginButtonPressed(username: username, password: password));
+  }
+
   @override
   Widget build(BuildContext context) {
     double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -61,12 +66,12 @@ class _LoginScreenState extends State<LoginScreen> {
           return Scaffold(
             body: SafeArea(
               child: LoginForm(
-                  loginBloc: loginBloc,
-                  context: context,
-                  margin: margin,
-                  usernameController: usernameController,
-                  passwordController: passwordController,
-                  questionStyle: questionStyle),
+                margin: margin,
+                usernameController: usernameController,
+                passwordController: passwordController,
+                questionStyle: questionStyle,
+                onLoginTapped: onLoginTapped,
+              ),
             ),
           );
         }
@@ -76,11 +81,10 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Stack(
                 children: <Widget>[
                   LoginForm(
-                      loginBloc: loginBloc,
-                      context: context,
                       margin: margin,
                       usernameController: usernameController,
                       passwordController: passwordController,
+                      onLoginTapped: onLoginTapped,
                       questionStyle: questionStyle),
                   _buildLoadingOverlay()
                 ],
