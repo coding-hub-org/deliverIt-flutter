@@ -11,10 +11,10 @@ import 'package:deliverit/blocs/authentication/authentication.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Monitor all Transitions
 class SimpleBlocDelegate extends BlocDelegate {
   @override
-  void onTransition(Transition transition) {
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
     print(transition);
   }
 }
@@ -89,10 +89,10 @@ class _DeliverItState extends State<DeliverIt> {
                 ),
               );
             }
-            if (state is AuthenticationAuthenticated) {
+            if (state is Authenticated) {
               return HomeScreen();
             }
-            if (state is AuthenticationUnauthenticated) {
+            if (state is Unauthenticated) {
               return LoginScreen();
             }
             if (state is AuthenticationLoading) {
