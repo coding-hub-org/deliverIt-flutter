@@ -4,7 +4,7 @@ import 'package:deliverit/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:deliverit/screens/login_screen.dart';
-import 'package:deliverit/screens/signup_screen.dart';
+import 'package:deliverit/screens/sign_up_screen.dart';
 import 'package:deliverit/screens/user_profile_screen.dart';
 
 import 'package:deliverit/blocs/authentication/authentication.dart';
