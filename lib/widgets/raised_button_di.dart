@@ -5,13 +5,13 @@ class RaisedButtonDI extends StatelessWidget {
   const RaisedButtonDI(
       {Key key,
       @required this.text,
-      @required this.loginBloc,
+      @required this.onPressed,
       this.width = 300})
       : assert(text != null),
-        assert(loginBloc != null),
+        assert(onPressed != null),
         super(key: key);
 
-  final LoginBloc loginBloc;
+  final VoidCallback onPressed;
   final String text;
   final double width;
 
@@ -25,10 +25,7 @@ class RaisedButtonDI extends StatelessWidget {
           highlightElevation: 1,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          onPressed: () {
-            loginBloc.dispatch(
-                LoginButtonPressed(username: "dsadas", password: "dasdasd"));
-          },
+          onPressed: onPressed,
           child: Text(
             text,
             style: TextStyle(color: Colors.white, fontSize: 16),

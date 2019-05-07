@@ -4,6 +4,8 @@ import 'package:deliverit/blocs/authentication/authentication_state.dart';
 import 'package:deliverit/respositories/user_repository.dart';
 import 'package:meta/meta.dart';
 
+import 'package:flutter/services.dart';
+
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final UserRepository userRepository;
@@ -22,22 +24,31 @@ class AuthenticationBloc
       final bool hasToken = userRepository.hasToken();
 
       if (hasToken) {
-        yield AuthenticationAuthenticated();
+        yield Authenticated();
       } else {
-        yield AuthenticationUnauthenticated();
+        yield Unauthenticated();
       }
     }
 
     if (event is Login) {
       yield AuthenticationLoading();
-      await userRepository.persistToken(event.token);
-      yield AuthenticationAuthenticated();
+
+      userRepository.persistToken(event.token);
+
+      yield Authenticated();
     }
 
     if (event is Logout) {
       yield AuthenticationLoading();
-      await userRepository.deleteToken();
-      yield AuthenticationUnauthenticated();
+
+      try {
+        await userRepository.logout();
+        yield Unauthenticated();
+      } on PlatformException catch (error) {
+        print("error logout");
+        print(error);
+        yield Unauthenticated(errorMessage: error.message);
+      }
     }
   }
 }

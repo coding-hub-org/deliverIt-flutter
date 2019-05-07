@@ -1,5 +1,7 @@
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 
 const USER_TOKEN = "user_token";
 
@@ -8,16 +10,62 @@ class UserRepository {
 
   UserRepository({@required this.sharedPreferences});
 
-  /// TODO: implement this
-  Future<String> authenticate({
-    @required String username,
+  Future<String> signUp({
+    @required String email,
     @required String password,
   }) async {
-    await Future.delayed(Duration(seconds: 1));
-    return 'token';
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    try {
+      FirebaseUser user = await auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+
+      if (user != null) {
+        String token = await user.getIdToken();
+        persistToken(token);
+        print("createUserWithEmailAndPassword successfully");
+        return token;
+      }
+    } on PlatformException catch (error) {
+      print("error createUserWithEmailAndPassword");
+      print(error.message);
+      return null;
+    }
+
+    return null;
   }
 
-  /// delete user's token on the device
+  Future<String> login({
+    @required String email,
+    @required String password,
+  }) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    FirebaseUser user =
+        await auth.signInWithEmailAndPassword(email: email, password: password);
+
+    if (user != null) {
+      String token = await user.getIdToken();
+      await sharedPreferences.setString("USER_TOKEN", token);
+      return token;
+    }
+
+    return null;
+  }
+
+  Future<void> logout() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    try {
+      await auth.signOut();
+      deleteToken();
+    } catch (error) {
+      print("error signOut from Firebase");
+      print(error);
+    }
+  }
+
+  /// Delete user's token on the device
   Future<void> deleteToken() async {
     await sharedPreferences.remove(USER_TOKEN);
     return;
@@ -29,8 +77,6 @@ class UserRepository {
     return;
   }
 
-  /// If the user logged in before, the token will be saved locally on the device
-  /// Return true if token is found on device, false otherwise
   bool hasToken() {
     if (sharedPreferences.getString(USER_TOKEN) != null) {
       return true;
