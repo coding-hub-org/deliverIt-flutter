@@ -1,4 +1,6 @@
+import 'package:deliverit/widgets/custom_input_field.dart';
 import 'package:deliverit/widgets/raised_button_di.dart';
+import 'package:deliverit/widgets/sign_up_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +17,8 @@ class SignUpScreen extends StatelessWidget {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
     final passwordConfirmController = TextEditingController();
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     double statusBarHeight = MediaQuery.of(context).padding.top;
     double usingHeight = MediaQuery.of(context).size.height - statusBarHeight;
@@ -23,6 +27,8 @@ class SignUpScreen extends StatelessWidget {
     double margin = 20;
 
     var questionStyle = TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
+
+    onSignUpTapped({String email, String password}) {}
 
     return Scaffold(
       body: SafeArea(
@@ -42,50 +48,15 @@ class SignUpScreen extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
                     )),
-                    Container(
-                        margin: EdgeInsets.only(top: margin),
-                        child: TextFormField(
-                          controller: firstNameController,
-                          obscureText: true,
-                          decoration: InputDecoration(labelText: "First Name"),
-                        )),
-                    Container(
-                        margin: EdgeInsets.only(top: margin),
-                        child: TextFormField(
-                          controller: lastNameController,
-                          obscureText: true,
-                          decoration: InputDecoration(labelText: "Last Name"),
-                        )),
-                    Container(
-                        margin: EdgeInsets.only(top: margin),
-                        child: TextFormField(
-                            controller: usernameController,
-                            decoration: InputDecoration(
-                              labelText: "Username",
-                            ))),
-                    Container(
-                        margin: EdgeInsets.only(top: margin),
-                        child: TextFormField(
-                          controller: passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(labelText: "Password"),
-                        )),
-                    Container(
-                        margin: EdgeInsets.only(top: margin),
-                        child: TextFormField(
-                          controller: passwordConfirmController,
-                          obscureText: true,
-                          decoration:
-                              InputDecoration(labelText: "Confirm Password"),
-                        )),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      margin: EdgeInsets.only(top: margin),
-                      child: RaisedButtonDI(
-                        text: "REGISTER",
-                        onClick: () {},
-                      ),
-                    ),
+                    SignUpForm(
+                      formKey: formKey,
+                      firstNameController: firstNameController,
+                      lastNameController: lastNameController,
+                      emailController: usernameController,
+                      passwordController: passwordController,
+                      confirmPasswordController: passwordConfirmController,
+                      onSignUpTapped: onSignUpTapped,
+                    )
                   ],
                 ),
               ),
