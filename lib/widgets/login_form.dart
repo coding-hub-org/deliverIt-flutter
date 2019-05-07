@@ -3,77 +3,53 @@ import 'package:deliverit/widgets/page_header.dart';
 import 'package:deliverit/widgets/raised_button_di.dart';
 import 'package:flutter/material.dart';
 
-typedef void OnLoginCallBack(
-    {@required String username, @required String password});
+typedef void OnLoginCallBack({
+  @required String username,
+  @required String password,
+});
 
-class LoginForm extends StatelessWidget {
-  const LoginForm(
-      {Key key,
-      // @required this.context,
-      @required this.margin,
-      @required this.usernameController,
-      @required this.passwordController,
-      @required this.questionStyle,
-      this.onLoginTapped})
-      : super(key: key);
+class LoginForm extends StatefulWidget {
+  const LoginForm({
+    Key key,
+    @required this.margin,
+    @required this.emailController,
+    @required this.passwordController,
+    @required this.questionStyle,
+    this.onLoginTapped,
+    @required this.formKey,
+  }) : super(key: key);
 
-  // final BuildContext context;
   final double margin;
-  final TextEditingController usernameController;
+  final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextStyle questionStyle;
   final OnLoginCallBack onLoginTapped;
+  final GlobalKey<FormState> formKey;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.1),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                PageHeader(
-                  header: "Login",
-                ),
-                _buildUsernameField(),
-                _buildPasswordField(),
-                Container(
-                  margin: EdgeInsets.only(top: margin),
-                  child: RaisedButtonDI(
-                    onPressed: () => {
-                          onLoginTapped(
-                              username: usernameController.text,
-                              password: passwordController.text)
-                        },
-                    text: "LOGIN",
-                    width: MediaQuery.of(context).size.width * 0.9,
-                  ),
-                ),
-                // _buildForgotPasswordLine()
-              ],
-            ),
-          ),
-        ),
-        _buildRegisterLine(context)
-      ],
-    );
+  _LoginFormState createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  FocusNode emailNode = FocusNode();
+  FocusNode passwordNode = FocusNode();
+
+  @override
+  void dispose() {
+    emailNode.dispose();
+    passwordNode.dispose();
+    super.dispose();
   }
 
   Container _buildRegisterLine(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: margin, bottom: margin),
+      margin: EdgeInsets.only(top: widget.margin, bottom: widget.margin),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
             "Don't have an account yet? ",
-            style: questionStyle,
+            style: widget.questionStyle,
           ),
           GestureDetector(
             onTap: () {
@@ -82,7 +58,7 @@ class LoginForm extends StatelessWidget {
             },
             child: Text(
               "Register here",
-              style: questionStyle.copyWith(color: Colors.orange),
+              style: widget.questionStyle.copyWith(color: Colors.orange),
             ),
           ),
         ],
@@ -92,17 +68,17 @@ class LoginForm extends StatelessWidget {
 
   Container _buildForgotPasswordLine() {
     return Container(
-      margin: EdgeInsets.only(top: margin),
+      margin: EdgeInsets.only(top: widget.margin),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
             "Forgot your password? ",
-            style: questionStyle,
+            style: widget.questionStyle,
           ),
           Text(
             "Click here",
-            style: questionStyle.copyWith(color: Colors.pinkAccent),
+            style: widget.questionStyle.copyWith(color: Colors.pinkAccent),
           )
         ],
       ),
@@ -111,21 +87,78 @@ class LoginForm extends StatelessWidget {
 
   Container _buildPasswordField() {
     return Container(
-        margin: EdgeInsets.only(top: margin),
-        child: TextFormField(
-          controller: passwordController,
-          obscureText: true,
-          decoration: InputDecoration(labelText: "Password"),
-        ));
+      margin: EdgeInsets.only(top: widget.margin),
+      child: TextFormField(
+        focusNode: passwordNode,
+        validator: (text) =>
+            text.isNotEmpty ? null : "Password cannot be blank",
+        controller: widget.passwordController,
+        obscureText: true,
+        decoration: InputDecoration(labelText: "Password"),
+      ),
+    );
   }
 
-  Container _buildUsernameField() {
+  Container _buildEmailField() {
     return Container(
-        margin: EdgeInsets.only(top: margin),
-        child: TextFormField(
-            controller: usernameController,
-            decoration: InputDecoration(
-              labelText: "Username",
-            )));
+      margin: EdgeInsets.only(top: widget.margin),
+      child: TextFormField(
+        focusNode: emailNode,
+        validator: (text) => text.isNotEmpty ? null : "Email cannot be blank",
+        controller: widget.emailController,
+        onFieldSubmitted: (text) {
+          emailNode.unfocus();
+          FocusScope.of(context).requestFocus(passwordNode);
+        },
+        decoration: InputDecoration(
+          labelText: "Email",
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: widget.formKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.1),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  PageHeader(
+                    header: "Login",
+                  ),
+                  _buildEmailField(),
+                  _buildPasswordField(),
+                  Container(
+                    margin: EdgeInsets.only(top: widget.margin),
+                    child: RaisedButtonDI(
+                      onPressed: () => {
+                            widget.onLoginTapped(
+                              username: widget.emailController.text,
+                              password: widget.passwordController.text,
+                            )
+                          },
+                      text: "LOGIN",
+                      width: MediaQuery.of(context).size.width * 0.9,
+                    ),
+                  ),
+                  // _buildForgotPasswordLine()
+                ],
+              ),
+            ),
+          ),
+          _buildRegisterLine(context)
+        ],
+      ),
+    );
   }
 }

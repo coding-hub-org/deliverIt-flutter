@@ -13,8 +13,9 @@ class SignUp extends AuthenticationEvent {
 }
 
 class Login extends AuthenticationEvent {
-  final String token;
   Login({@required this.token});
+
+  final String token;
 
   @override
   String toString() => 'Login';
