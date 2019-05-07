@@ -4,17 +4,17 @@ import 'package:deliverit/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:deliverit/screens/login_screen.dart';
-import 'package:deliverit/screens/signup_screen.dart';
+import 'package:deliverit/screens/sign_up_screen.dart';
 import 'package:deliverit/screens/user_profile_screen.dart';
 
 import 'package:deliverit/blocs/authentication/authentication.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Monitor all Transitions
 class SimpleBlocDelegate extends BlocDelegate {
   @override
-  void onTransition(Transition transition) {
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
     print(transition);
   }
 }
@@ -89,10 +89,10 @@ class _DeliverItState extends State<DeliverIt> {
                 ),
               );
             }
-            if (state is AuthenticationAuthenticated) {
+            if (state is Authenticated) {
               return HomeScreen();
             }
-            if (state is AuthenticationUnauthenticated) {
+            if (state is Unauthenticated) {
               return LoginScreen();
             }
             if (state is AuthenticationLoading) {

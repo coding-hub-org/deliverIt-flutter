@@ -5,14 +5,18 @@ class AuthenticationUninitialized extends AuthenticationState {
   String toString() => 'AuthenticationUninitialized';
 }
 
-class AuthenticationAuthenticated extends AuthenticationState {
+class Authenticated extends AuthenticationState {
   @override
   String toString() => 'AuthenticationAuthenticated';
 }
 
-class AuthenticationUnauthenticated extends AuthenticationState {
+class Unauthenticated extends AuthenticationState {
+  Unauthenticated({this.errorMessage});
+
   @override
   String toString() => 'AuthenticationUnauthenticated';
+
+  final String errorMessage;
 }
 
 class AuthenticationLoading extends AuthenticationState {

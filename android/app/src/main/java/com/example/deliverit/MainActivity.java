@@ -1,4 +1,4 @@
-package com.example.deliverit;
+package com.codinghub.deliverit;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

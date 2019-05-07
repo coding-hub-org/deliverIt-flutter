@@ -6,6 +6,7 @@ import 'package:deliverit/blocs/login/login_state.dart';
 import 'package:deliverit/respositories/user_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/services.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthenticationBloc authenticationBloc;
@@ -24,19 +25,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginLoading();
 
       try {
-        /// TODO get token from login authentication
-        await Future.delayed(Duration(seconds: 2));
-        final token = "dummy";
+        String token = await authenticationBloc.userRepository.login(
+          email: event.email,
+          password: event.password,
+        );
 
-        // final token = await authenticationBloc.userRepository.authenticate(
-        //   username: event.username,
-        //   password: event.password,
-        // );
+        if (token == null) {
+          yield LoginFailure(error: "No token");
+          return;
+        }
 
         authenticationBloc.dispatch(Login(token: token));
+
         yield LoginInitial();
-      } catch (error) {
-        yield LoginFailure(error: error.toString());
+      } on PlatformException catch (error) {
+        print("error");
+        print(error);
+        yield LoginFailure(error: error.message);
       }
     }
   }
