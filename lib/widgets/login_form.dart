@@ -27,68 +27,6 @@ class LoginForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
 
   @override
-<<<<<<< HEAD
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.1),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Center(
-                    child: Text(
-                  "Login",
-                  style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-                )),
-                Container(
-                    margin: EdgeInsets.only(top: margin),
-                    child: TextFormField(
-                        controller: usernameController,
-                        decoration: InputDecoration(
-                          labelText: "Username",
-                        ))),
-                Container(
-                    margin: EdgeInsets.only(top: margin),
-                    child: TextFormField(
-                      controller: passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(labelText: "Password"),
-                    )),
-                Container(
-                  margin: EdgeInsets.only(top: margin),
-                  child: RaisedButtonDI(
-                    onClick: () {
-                      loginBloc.dispatch(LoginButtonPressed(
-                          username: "dsadas", password: "dasdasd"));
-                    },
-                    text: "LOGIN",
-                    width: MediaQuery.of(context).size.width * 0.9,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: margin),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "Forgot your password? ",
-                        style: questionStyle,
-                      ),
-                      Text(
-                        "Click here",
-                        style: questionStyle.copyWith(color: Colors.pinkAccent),
-                      )
-                    ],
-                  ),
-                )
-              ],
-=======
   _LoginFormState createState() => _LoginFormState();
 }
 
@@ -121,7 +59,6 @@ class _LoginFormState extends State<LoginForm> {
             child: Text(
               "Register here",
               style: widget.questionStyle.copyWith(color: Colors.orange),
->>>>>>> c91a50807454f013bde6b79b7bc7aef0d78483a3
             ),
           ),
         ],
